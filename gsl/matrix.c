@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <gsl/gsl_linalg.h>
-#include <gsl/gsl_matrix.h>
+#include "gsl/gsl_linalg.h"
+#include "gsl/gsl_matrix.h"
 matrix_t * make_matrix (int rn, int cn){
 	matrix_t *matrix = malloc(sizeof(*matrix));
 	matrix->mat = gsl_matrix_alloc(rn, cn);

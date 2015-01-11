@@ -2,11 +2,10 @@
 #define _MATRIX_H_
 
 #include <stdio.h>
-
+#include "gsl/gsl_linalg.h"
+#include "gsl/gsl_matrix.h"
 typedef struct {
-	int rn;
-	int cn;
-	double *e;
+	gsl_matrix *mat;
 } matrix_t;
 
 matrix_t * make_matrix (int rn, int cn );
