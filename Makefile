@@ -1,5 +1,5 @@
 aprox: main.o splines.o points.o aproksymator_na_bazie.o gsl/libge.a gsl/solver.h
-	$(CC) -o aprox  main.o splines.o points.o aproksymator_na_bazie.o gsl/matrix.c gsl/solver.c -lgsl  -Lgsl_linalg.h -Lgsl_matrix.h -lgslcblas
+	$(CC) -o  aprox -ggdb  main.o splines.o points.o aproksymator_na_bazie.o gsl/matrix.c gsl/solver.c -lgsl  -Lgsl_linalg.h -Lgsl_matrix.h -lgslcblas
 
 intrp: main.o splines.o points.o interpolator.o gsl/libge.a
 	$(CC) -o intrp  main.o splines.o points.o interpolator.o -lgsl -Lgsl_linalg.h -Lgsl_matrix.h -lgslcblas
