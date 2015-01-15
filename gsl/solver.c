@@ -2,15 +2,15 @@
 #include <gsl/gsl_linalg.h>
 #include "matrix.h"
 #include <gsl/gsl_matrix.h>
-
-
+#include <stdlib.h>
+#include <math.h>
 void
 pivot_ge_in_situ_matrix (matrix_t * c)
 {
   int i, j, k;
   int cn = (int)c->mat->size1;
   int rn = (int)c->mat->size2;
-  double *e = c->mat;
+  double *e = c->mat->data;
   for (k = 0; k < rn - 1; k++) {        /* eliminujemy (zerujemy) kolumnę nr k */
     int piv = k;                /* wybór elementu dominującego - maks. z k-tej kol., poniżej diag */
     for (i = k + 1; i < rn; i++)
