@@ -53,15 +53,14 @@ read_matrix (FILE * in)
   if ((new_mat = make_matrix (rn, cn)) == NULL)
     return NULL;
   for (i = 0; i < rn; i++)
-    for (j = 0; j < cn; j++)
-      if (fscanf (in, "%lf", &x) != 1) {
-        free_matrix (new_mat);
-        return NULL;
-      }
+    for (j = 0; j < cn; j++){
+      if(fscanf (in, "%lf", &x)!=1){
+        free(new_mat);
+	return 0;}
       else{
-	gsl_matrix_set(new_mat->mat,rn,cn,x);
+	gsl_matrix_set(new_mat->mat,i,j,x);
       }
-
+    }
   return new_mat;
 }
 
@@ -121,16 +120,24 @@ ge_matrix (matrix_t * a)
   matrix_t *c = copy_matrix (a);
   if (c != NULL) {
     int i, j, k;
+    double *x,*y,*z,*h;
     int cn = (int)c->mat->size1;
     int rn = (int)c->mat->size2;
     double *e = c->mat->data;
     for (k = 0; k < rn - 1; k++) {      /* eliminujemy (zerujemy) kolumnę nr k */
       for (i = k + 1; i < rn; i++) {    /* pętla po kolejnych
                                            wierszach poniżej diagonalii k,k */
-        double d = *(e + i * cn + k) / *(e + k * cn + k);
-        for (j = k; j < cn; j++)
-          *(e + i * cn + j) -= d * *(e + k * cn + j);
-      }
+        x=gsl_matrix_ptr(c->mat,i,k);
+	y=gsl_matrix_ptr(c->mat,k,k);
+
+	double d = *x / *y;
+        for (j = k; j < cn; j++){
+          z=gsl_matrix_ptr(c->mat,i,j);
+	  h=gsl_matrix_ptr(c->mat,k,j);
+	  *z -= d * *h;
+      
+	}
+    }
     }
   }
   return c;
@@ -141,6 +148,7 @@ bs_matrix (matrix_t * a)
 {
   if (a != NULL) {
     int r, c, k;
+    double *x, *y, *z, *h;
     int cn = (int)a->mat->size1;
     int rn = (int)a->mat->size2;
     double *e = a->mat->data;
@@ -148,10 +156,13 @@ bs_matrix (matrix_t * a)
     for (k = rn; k < cn; k++) { /* pętla po prawych stronach */
       for (r = rn - 1; r >= 0; r--) {   /* petla po niewiadomych */
         double rhs = *(e + r * cn + k); /* wartość prawej strony */
-        for (c = rn - 1; c > r; c--)    /* odejmujemy wartości już wyznaczonych niewiadomych *
-                                           pomnożone przed odpowiednie współczynniki */
-          rhs -= *(e + r * cn + c) * *(e + c * cn + k);
-        *(e + r * cn + k) = rhs / *(e + r * cn + r);    /* nowa wartość to prawa strona / el. diagonalny */
+        for (c = rn - 1; c > r; c--){    
+          x=gsl_matrix_ptr(a->mat,r,c);
+	  y=gsl_matrix_ptr(a->mat,c,k);
+	rhs -= *x * *y;}
+	z=gsl_matrix_ptr(a->mat,r,k);
+	h=gsl_matrix_ptr(a->mat,r,r);
+        *z = rhs / *h;    /* nowa wartość to prawa strona / el. diagonalny */
       }
     }
     return 0;
