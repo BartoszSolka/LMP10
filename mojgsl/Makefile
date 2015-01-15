@@ -1,8 +1,9 @@
 libge: matrix.o solver.o
-	ar rvs libge.a $^
+	ar rvs libge.a $^ 
 
 matrix.o: matrix.c matrix.h
-solver.o: solver.c solver.h
+solver.o: solver.c solver.h matrix.h
+
 .PHONY: clean
 
 clean:
