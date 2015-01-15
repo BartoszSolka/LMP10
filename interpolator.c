@@ -1,6 +1,6 @@
 #include "makespl.h"
-#include "piv_ge_solver.h"
-
+#include "gsl/solver.h"
+#include "gsl/matrix.h"
 #include <stdio.h>
 
 void
@@ -40,7 +40,7 @@ make_spl (points_t * pts, spline_t * spl)
 	write_matrix( eqs, stdout );
 #endif
 
-	if( piv_ge_solver( eqs ) ) {
+	if( solve( eqs ) ) {
 		spl->n = 0;
 		return;
 	}
