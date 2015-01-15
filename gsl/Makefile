@@ -1,11 +1,11 @@
+libge: matrix.o solver.o
+	ar rvs libge.a $^
+
 matrix.o: matrix.c matrix.h
-solver.o: solver.c
+solver.o: solver.c solver.h
 .PHONY: clean
 
 clean:
 	-rm *.o libge.a
-
-
-	gcc solver.o matrix.o -l/usr/include/gsl/gsl_linalg.h -l/usr/include/gsl/gsl_matrix.h
 
 
