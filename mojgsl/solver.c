@@ -7,24 +7,32 @@
 void
 pivot_ge_in_situ_matrix (matrix_t * c)
 {
-  int i, j, k;
-  int cn = (int)c->mat->size1;
-  int rn = (int)c->mat->size2;
+  size_t i, j, k;
+  double *x, *y,*z,*f,*a;
+  size_t cn = c->mat->size1-1;
+  size_t rn = c->mat->size2-1;
   double *e = c->mat->data;
-  for (k = 0; k < rn - 1; k++) {        /* eliminujemy (zerujemy) kolumnę nr k */
-    int piv = k;                /* wybór elementu dominującego - maks. z k-tej kol., poniżej diag */
-    for (i = k + 1; i < rn; i++)
-      if (fabs (*(e + i * cn + k)) > fabs (*(e + piv * cn + k)))
-        piv = i;
-    if (piv != k) { 
-	printf("%d",k);            /* jeśli diag. nie jest pivtem - wymień wiersze */
-      xchg_rows (c, piv-1, k-2);
+  double d;
+  for (k = 0; k < rn; k++) {        /* eliminujemy (zerujemy) kolumnę nr k */
+	size_t piv = k;
+	for (i = k + 1; i < rn; i++){
+	x=gsl_matrix_ptr(c->mat,i,k);
+	y=gsl_matrix_ptr(c->mat,piv,k);
+	if (fabs (*x) > fabs (*y))
+        piv = i;}
+    if (piv != k) {             /* jeśli diag. nie jest pivtem - wymień wiersze */
+      xchg_rows (c, piv, k);
     }
-    for (i = k + 1; i < rn; i++) {      /* pętla po kolejnych
-                                           wierszach poniżej diagonalii k,k */
-      double d = *(e + i * cn + k) / *(e + k * cn + k);
-      for (j = k; j < cn; j++)
-        *(e + i * cn + j) -= d * *(e + k * cn + j);
+    for (i = k + 1; i < rn; i++) {   
+      
+	x=gsl_matrix_ptr(c->mat,i,k);
+        f=gsl_matrix_ptr(c->mat,k,k);
+      d = *x / *f;
+      for (j = k; j < cn; j++){
+        z=gsl_matrix_ptr(c->mat,i,j);
+	a=gsl_matrix_ptr(c->mat,k,j);  
+	(*z) -=d*(*a);
+      }
     }
   }
 }
@@ -48,5 +56,5 @@ piv_ge_solver (matrix_t * eqs)
     return 1;
 }
 
-
+	
 
