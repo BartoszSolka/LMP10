@@ -2,8 +2,9 @@
 #define _MATRIX_H_
 
 #include <stdio.h>
-#include "gsl/gsl_linalg.h"
-#include "gsl/gsl_matrix.h"
+#include <gsl/gsl_linalg.h>
+#include <gsl/gsl_cblas.h>
+#include <gsl/gsl_matrix.h>
 typedef struct {
 	gsl_matrix *mat;
 } matrix_t;

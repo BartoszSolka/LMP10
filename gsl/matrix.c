@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "gsl/gsl_linalg.h"
-#include "gsl/gsl_matrix.h"
+#include <gsl/gsl_linalg.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_cblas.h>
 matrix_t * make_matrix (int rn, int cn){
 	matrix_t *matrix = malloc(sizeof(*matrix));
 	matrix->mat = gsl_matrix_alloc(rn, cn);
@@ -74,7 +75,7 @@ matrix_t
 *copy_matrix (matrix_t * s)
 {
 	matrix_t *new_matrix;
-	gsl_matrix_set_zero(new_matrix);
+	gsl_matrix_set_zero(new_matrix->mat);
 	gsl_matrix_memcpy(new_matrix->mat,s->mat);
 	return new_matrix;
 }
@@ -86,20 +87,20 @@ transpose_matrix (matrix_t * s)
   if (s != NULL)
     d = make_matrix((int)s->mat->size1, (int)s->mat->size2);
   gsl_matrix_memcpy(d->mat,s->mat);
-  gsl_matrix_transpose(d);
+  gsl_matrix_transpose(d->mat);
   return d;
 }
 
 void
 xchg_rows (matrix_t * m, int i, int j)
 {
-	gsl_matrix_swap_rows(m,i,j);
+	gsl_matrix_swap_rows(m->mat,i,j);
 }
 
 void
 xchg_cols (matrix_t * m, int i, int j)
 {
-	gsl_matrix_swap_columns(m,i,j);
+	gsl_matrix_swap_columns(m->mat,i,j);
 }
 
 matrix_t *
@@ -109,7 +110,7 @@ mull_matrix (matrix_t * a, matrix_t * b)
     return NULL;
   else {
     matrix_t *c = make_matrix ((int)a->mat->size1, (int)b->mat->size2);
-    gsl_matrix_mul_elements(c,b);
+    gsl_matrix_mul_elements(c->mat,b->mat);
   return c;
   }
 }
