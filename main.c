@@ -103,8 +103,8 @@ main (int argc, char **argv)
     make_spl (&pts, &spl);
 
     if( spl.n > 0 )
-			write_spl (&spl, ouf);
-
+	write_spl (&spl, ouf);
+    
     fclose (ouf);
   } else if (out != NULL) {  /* if point-file was NOT given, try to read splines from a file */
     FILE *splf = fopen (out, "r");
