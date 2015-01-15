@@ -123,7 +123,7 @@ ge_matrix (matrix_t * a)
     int i, j, k;
     int cn = (int)c->mat->size1;
     int rn = (int)c->mat->size2;
-    double *e = c->mat;
+    double *e = c->mat->data;
     for (k = 0; k < rn - 1; k++) {      /* eliminujemy (zerujemy) kolumnę nr k */
       for (i = k + 1; i < rn; i++) {    /* pętla po kolejnych
                                            wierszach poniżej diagonalii k,k */
@@ -143,7 +143,7 @@ bs_matrix (matrix_t * a)
     int r, c, k;
     int cn = (int)a->mat->size1;
     int rn = (int)a->mat->size2;
-    double *e = a->mat;
+    double *e = a->mat->data;
 
     for (k = rn; k < cn; k++) { /* pętla po prawych stronach */
       for (r = rn - 1; r >= 0; r--) {   /* petla po niewiadomych */
