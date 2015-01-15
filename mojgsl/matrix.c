@@ -48,10 +48,10 @@ read_matrix (FILE * in)
   double x;
   matrix_t *new_mat;
   if (fscanf (in, "%d %d", &rn, &cn) != 2)
-    return NULL;
+	return NULL;
 
   if ((new_mat = make_matrix (rn, cn)) == NULL)
-    return NULL;
+	return NULL;
   for (i = 0; i < rn; i++)
     for (j = 0; j < cn; j++){
       if(fscanf (in, "%lf", &x)!=1){
@@ -155,7 +155,8 @@ bs_matrix (matrix_t * a)
 
     for (k = rn; k < cn; k++) { /* pętla po prawych stronach */
       for (r = rn - 1; r >= 0; r--) {   /* petla po niewiadomych */
-        double rhs = *(e + r * cn + k); /* wartość prawej strony */
+        z=gsl_matrix_ptr(a->mat,r,k);
+	double rhs = *z; /* wartość prawej strony */
         for (c = rn - 1; c > r; c--){    
           x=gsl_matrix_ptr(a->mat,r,c);
 	  y=gsl_matrix_ptr(a->mat,c,k);
