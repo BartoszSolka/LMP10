@@ -1,6 +1,6 @@
 #include "makespl.h"
-#include "mojgsl/solver.h"
-#include "mojgsl/matrix.h"
+#include "solver.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
@@ -151,7 +151,6 @@ make_spl(points_t * pts, spline_t * spl)
 		nb = atoi( nbEnv );
 
 	eqs = make_matrix(nb, nb + 1);
-
 #ifdef DEBUG
 #define TESTBASE 500
 	{
@@ -185,7 +184,6 @@ make_spl(points_t * pts, spline_t * spl)
 #ifdef DEBUG
 	write_matrix(eqs, stdout);
 #endif
-
 	if (piv_ge_solver(eqs)) {
 		spl->n = 0;
 		return;
@@ -193,7 +191,6 @@ make_spl(points_t * pts, spline_t * spl)
 #ifdef DEBUG
 	write_matrix(eqs, stdout);
 #endif
-
 	if (alloc_spl(spl, nb) == 0) {
 		for (i = 0; i < spl->n; i++) {
 			double xx = spl->x[i] = a + i*(b-a)/(spl->n-1);
@@ -203,7 +200,7 @@ make_spl(points_t * pts, spline_t * spl)
 			spl->f2[i] = 0;
 			spl->f3[i] = 0;
 			for (k = 0; k < nb; k++) {
-				double		ck = get_entry_matrix(eqs, k, nb);
+				double ck = get_entry_matrix(eqs, k, nb);
 				spl->f[i]  += ck * fi  (a, b, nb, k, xx);
 				spl->f1[i] += ck * dfi (a, b, nb, k, xx);
 				spl->f2[i] += ck * d2fi(a, b, nb, k, xx);
