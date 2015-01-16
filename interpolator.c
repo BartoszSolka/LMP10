@@ -1,6 +1,6 @@
 #include "makespl.h"
-#include "mojgsl/solver.h"
-#include "mojgsl/matrix.h"
+#include "solver.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 void
