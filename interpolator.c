@@ -8,7 +8,7 @@ make_spl (points_t * pts, spline_t * spl)
 
 	int n= pts->n - 1;
 	matrix_t *eqs= NULL;
-	*eqs = make_matrix (n*3,n*3+1);
+	eqs = make_matrix (n*3,n*3+1);
 	double *x = pts->x;
 	double *y = pts->y;
 
@@ -41,6 +41,7 @@ make_spl (points_t * pts, spline_t * spl)
 #endif
 
 	if( piv_ge_solver( eqs ) ) {
+		piv_ge_solver(eqs);
 		spl->n = 0;
 		return;
 	}
