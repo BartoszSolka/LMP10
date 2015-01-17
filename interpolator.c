@@ -1,6 +1,5 @@
 #include "makespl.h"
 #include "solver.h"
-#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 void
@@ -8,7 +7,8 @@ make_spl (points_t * pts, spline_t * spl)
 {
 
 	int n= pts->n - 1;
-	matrix_t *eqs= make_matrix( n*3, n*3+1 );
+	matrix_t *eqs= NULL;
+	*eqs = make_matrix (n*3,n*3+1);
 	double *x = pts->x;
 	double *y = pts->y;
 
