@@ -1,12 +1,12 @@
 libge: matrix.o solver.o
-	ar rvs libge.a $^
+	ar rvs libge.a $^ 
+
 matrix.o: matrix.c matrix.h
-	$(CC) -o matrix.o -c matrix.c -lm -lgsl -Lgsl_linalg.h -lgslcblas
+	$(CC) -L/usr/local/lib -c matrix.c -lgsl -lgslcblas -lm
 solver.o: solver.c solver.h matrix.h
-	$(CC) -o solver.o -c solver.c -lm -lgsl -Lgsl_linalg.h -lgslcblas 
+	$(CC) -L/usr/local/lib -c solver.c -lgsl -lgslcblas -lm
 .PHONY: clean
 
 clean:
 	-rm *.o libge.a
-
 
