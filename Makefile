@@ -2,7 +2,7 @@ aprox: main.o splines.o points.o aproksymator_na_bazie.o mojgsl/libge.a
 	$(CC) -o aprox  main.o splines.o points.o aproksymator_na_bazie.o -L mojgsl -l ge -lgsl -lgslcblas
  
 intrp: main.o splines.o points.o interpolator.o mojgsl/libge.a
-	$(CC) -o intrp  main.o splines.o points.o interpolator.o -L mojgsl
+	$(CC) -o intrp  main.o splines.o points.o interpolator.o -L mojgsl -l ge -lgsl -lgslcblas
  
 prosta: main.o splines.o points.o prosta.o
 	$(CC) -o prosta  main.o splines.o points.o prosta.o
