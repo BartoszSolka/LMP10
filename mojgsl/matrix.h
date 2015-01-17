@@ -1,6 +1,5 @@
-#ifndef _MATRIX_H_
-#define _MATRIX_H_
-
+#ifndef MATRIX_H
+#define MATRIX_H
 #include <stdio.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_cblas.h>
@@ -34,13 +33,5 @@ matrix_t * mull_matrix( matrix_t *, matrix_t * );
 matrix_t * ge_matrix( matrix_t * );
 
 int bs_matrix( matrix_t * );
-
-matrix_t * pivot_ge_matrix( matrix_t *, int *row_per );
-
-void pivot_ge_in_situ_matrix( matrix_t * );
-
-matrix_t * symm_pivot_ge_matrix( matrix_t *, int *per );
-
-int *pivot_get_inv_per( matrix_t *, int *row_per );
 
 #endif
