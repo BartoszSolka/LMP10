@@ -20,7 +20,6 @@ free_matrix (matrix_t * m)
 void
 put_entry_matrix (matrix_t * m, int i, int j, double val)
 {
-	if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
 	gsl_matrix_set(m->mat,i,j,val);
 }
 
@@ -28,19 +27,14 @@ void
 add_to_entry_matrix (matrix_t * m, int i, int j, double val)
 {
 	double x;
-	 if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
-	{x=gsl_matrix_get(m->mat,i,j);
+	x=gsl_matrix_get(m->mat,i,j);
 	gsl_matrix_set(m->mat,i,j,val+x);
-}
 }
 
 double
 get_entry_matrix (matrix_t * m, int i, int j )
 {
-	if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
 	return gsl_matrix_get(m->mat,i,j);
-	else
-	return -999;
 }
 
 matrix_t *
