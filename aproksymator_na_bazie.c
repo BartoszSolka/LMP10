@@ -1,5 +1,6 @@
 #include "makespl.h"
 #include "solver.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
@@ -137,7 +138,7 @@ void
 make_spl(points_t * pts, spline_t * spl)
 {
 
- 	matrix_t       *eqs= NULL;
+	matrix_t       *eqs= NULL;
 	double         *x = pts->x;
 	double         *y = pts->y;
 	double		a = x[0];
