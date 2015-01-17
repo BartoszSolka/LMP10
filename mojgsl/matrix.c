@@ -4,10 +4,9 @@
 #include <string.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_matrix.h>
-#include <gsl/gsl_cblas.h>
 matrix_t * make_matrix (int rn, int cn){
 	matrix_t *matrix = malloc(sizeof(*matrix));
-	matrix->mat = gsl_matrix_alloc(rn, cn);
+	matrix->mat = gsl_matrix_calloc(rn, cn);
 	return matrix;
 }
 
@@ -21,23 +20,27 @@ free_matrix (matrix_t * m)
 void
 put_entry_matrix (matrix_t * m, int i, int j, double val)
 {
+	if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
 	gsl_matrix_set(m->mat,i,j,val);
 }
 
 void
 add_to_entry_matrix (matrix_t * m, int i, int j, double val)
 {
-	double x=0;
-	x=gsl_matrix_get(m->mat,i,j);
-	x+=val;
-	gsl_matrix_set(m->mat,i,j,x);
-
+	double x;
+	 if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
+	{x=gsl_matrix_get(m->mat,i,j);
+	gsl_matrix_set(m->mat,i,j,val+x);
+}
 }
 
 double
 get_entry_matrix (matrix_t * m, int i, int j )
 {
+	if (i >= 0 && i < m->mat->size1 && j >= 0 && j <= m->mat->size2)
 	return gsl_matrix_get(m->mat,i,j);
+	else
+	return -999;
 }
 
 matrix_t *
@@ -52,7 +55,7 @@ read_matrix (FILE * in)
 
   if ((new_mat = make_matrix (rn, cn)) == NULL)
 	return NULL;
-  for (i = 0; i < rn; i++)
+  for (i = 0; i < rn; i++){
     for (j = 0; j < cn; j++){
       if(fscanf (in, "%lf", &x)!=1){
         free(new_mat);
@@ -60,7 +63,7 @@ read_matrix (FILE * in)
       else{
 	gsl_matrix_set(new_mat->mat,i,j,x);
       }
-    }
+    }}
   return new_mat;
 }
 
@@ -73,7 +76,7 @@ write_matrix (matrix_t * m, FILE * out)
 matrix_t 
 *copy_matrix (matrix_t * s)
 {
-	matrix_t *new_matrix;
+	matrix_t *new_matrix = make_matrix(s->mat->size1,s->mat->size2);
 	gsl_matrix_set_zero(new_matrix->mat);
 	gsl_matrix_memcpy(new_matrix->mat,s->mat);
 	return new_matrix;
@@ -109,6 +112,7 @@ mull_matrix (matrix_t * a, matrix_t * b)
     return NULL;
   else {
     matrix_t *c = make_matrix ((int)a->mat->size1, (int)b->mat->size2);
+    gsl_matrix_memcpy(c->mat,a->mat);
     gsl_matrix_mul_elements(c->mat,b->mat);
   return c;
   }
@@ -130,11 +134,11 @@ ge_matrix (matrix_t * a)
         x=gsl_matrix_ptr(c->mat,i,k);
 	y=gsl_matrix_ptr(c->mat,k,k);
 
-	double d = *x / *y;
+	double d = (*x) / (*y);
         for (j = k; j < cn; j++){
           z=gsl_matrix_ptr(c->mat,i,j);
 	  h=gsl_matrix_ptr(c->mat,k,j);
-	  *z -= d * *h;
+	  (*z) -= d * (*h);
       
 	}
     }
@@ -156,14 +160,14 @@ bs_matrix (matrix_t * a)
     for (k = rn; k < cn; k++) { /* pętla po prawych stronach */
       for (r = rn - 1; r >= 0; r--) {   /* petla po niewiadomych */
         z=gsl_matrix_ptr(a->mat,r,k);
-	double rhs = *z; /* wartość prawej strony */
+	double rhs = *(z); /* wartość prawej strony */
         for (c = rn - 1; c > r; c--){    
           x=gsl_matrix_ptr(a->mat,r,c);
 	  y=gsl_matrix_ptr(a->mat,c,k);
-	rhs -= *x * *y;}
+	rhs -= *(x) * *(y);}
 	z=gsl_matrix_ptr(a->mat,r,k);
 	h=gsl_matrix_ptr(a->mat,r,r);
-        *z = rhs / *h;    /* nowa wartość to prawa strona / el. diagonalny */
+        *(z) = rhs / *(h);    /* nowa wartość to prawa strona / el. diagonalny */
       }
     }
     return 0;
